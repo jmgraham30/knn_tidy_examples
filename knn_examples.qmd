@@ -58,6 +58,8 @@ Now, we are interested in two types of problems:
 
 For both problems, we will use the nearest neighbors algorithm to make our predictions. Further, we will use the `tidymodels` framework to perform the analysis. This framework is built on top of the `tidyverse` and provides a consistent interface for performing machine learning tasks. Later in the course, we will study the `tidymodels` framework in more detail. For now, we will just use it to perform our analysis.
 
+### EDA
+
 Before getting into an analysis, let's take a look at some exploratory plots of the data. @fig-pengs-plots shows how male and female penguins differ by flipper length and body mass. 
 
 ```{r}
@@ -100,7 +102,7 @@ Now we can see more clearly that within each species, male penguins tend to weig
 
 
 
-## KNN Example
+## KNN Examples
 
 For both our classification and regression problems, we will use the `nearest_neighbor()` function from the `tidymodels` package. This function takes a formula as its first argument and a data frame as its second argument. The formula specifies the outcome variable and the predictor variables. Before we build our models, we will need to split the data into a training set and a testing set. We will use the `initial_split()` function to do this. This function takes a data frame as its first argument and a proportion as its second argument. The proportion specifies the proportion of the data that should be in the training set. The function returns a list with two elements: `train` and `test`. Each element is a data frame containing the training and testing data, respectively. 
 
@@ -120,7 +122,9 @@ penguins_test <- testing(penguins_split)
 
 ### Classification
 
-Since we are using nearest neighbors, we will need to normalize our quantitative predictors which can be done in a preprocessing step using functions from the `recipes` package which is loaded with the `tidymodels` family of packages. 
+Since we are using nearest neighbors, we will need to normalize our quantitative predictors which can be done in a preprocessing step using the function `step_normalize` from the `recipes` package which is loaded with the `tidymodels` family of packages[^1].
+
+[^1]: There are many different types of preprocessing steps that can be performed using the `recipes` package. We will learn more about this package later in the course.
 
 ```{r}
 

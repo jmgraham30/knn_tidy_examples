@@ -3359,8 +3359,11 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The Data</a></li>
-  <li><a href="#knn-example" id="toc-knn-example" class="nav-link" data-scroll-target="#knn-example">KNN Example</a>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The Data</a>
+  <ul class="collapse">
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  </ul></li>
+  <li><a href="#knn-examples" id="toc-knn-examples" class="nav-link" data-scroll-target="#knn-examples">KNN Examples</a>
   <ul class="collapse">
   <li><a href="#classification" id="toc-classification" class="nav-link" data-scroll-target="#classification">Classification</a></li>
   <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a></li>
@@ -3497,6 +3500,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <li><p>A regression problem where we want to predict the body mass of a penguin based on its physical measurements and perhaps the sex and species as well.</p></li>
 </ol>
 <p>For both problems, we will use the nearest neighbors algorithm to make our predictions. Further, we will use the <code>tidymodels</code> framework to perform the analysis. This framework is built on top of the <code>tidyverse</code> and provides a consistent interface for performing machine learning tasks. Later in the course, we will study the <code>tidymodels</code> framework in more detail. For now, we will just use it to perform our analysis.</p>
+<section id="eda" class="level3">
+<h3 class="anchored" data-anchor-id="eda">EDA</h3>
 <p>Before getting into an analysis, let’s take a look at some exploratory plots of the data. <a href="#fig-pengs-plots">Figure 1</a> shows how male and female penguins differ by flipper length and body mass.</p>
 <div class="cell">
 <details>
@@ -3541,8 +3546,9 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 <p>Now we can see more clearly that within each species, male penguins tend to weigh more and have longer flippers. Furthermore, we can see that a longer flipper tends to correspond with a greater body mass.</p>
 </section>
-<section id="knn-example" class="level2">
-<h2 class="anchored" data-anchor-id="knn-example">KNN Example</h2>
+</section>
+<section id="knn-examples" class="level2">
+<h2 class="anchored" data-anchor-id="knn-examples">KNN Examples</h2>
 <p>For both our classification and regression problems, we will use the <code>nearest_neighbor()</code> function from the <code>tidymodels</code> package. This function takes a formula as its first argument and a data frame as its second argument. The formula specifies the outcome variable and the predictor variables. Before we build our models, we will need to split the data into a training set and a testing set. We will use the <code>initial_split()</code> function to do this. This function takes a data frame as its first argument and a proportion as its second argument. The proportion specifies the proportion of the data that should be in the training set. The function returns a list with two elements: <code>train</code> and <code>test</code>. Each element is a data frame containing the training and testing data, respectively.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
@@ -3554,7 +3560,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 <section id="classification" class="level3">
 <h3 class="anchored" data-anchor-id="classification">Classification</h3>
-<p>Since we are using nearest neighbors, we will need to normalize our quantitative predictors which can be done in a preprocessing step using functions from the <code>recipes</code> package which is loaded with the <code>tidymodels</code> family of packages.</p>
+<p>Since we are using nearest neighbors, we will need to normalize our quantitative predictors which can be done in a preprocessing step using the function <code>step_normalize</code> from the <code>recipes</code> package which is loaded with the <code>tidymodels</code> family of packages<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>peng_sex_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(sex <span class="sc">~</span> flipper_length_mm <span class="sc">+</span> body_mass_g <span class="sc">+</span> species,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> penguins_train) <span class="sc">%&gt;%</span></span>
@@ -3896,7 +3902,13 @@ Prediction female male
 </section>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>There are many different types of preprocessing steps that can be performed using the <code>recipes</code> package. We will learn more about this package later in the course.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
