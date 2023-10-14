@@ -1,7 +1,12 @@
 ---
 title: "KNN Tidymodels Example"
 author: "JMG"
-format: html
+format: 
+  html:
+    echo: true
+    code-fold: true
+    toc: true
+    self-contained: true
 ---
 
 ```{r}
