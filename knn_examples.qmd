@@ -247,3 +247,95 @@ peng_mass_fit %>%
 
 ### Tuning K
 
+It is possible that the performance of our model depends on our choice of $k$ in the nearest neighbors algorithm. We can try to use the `tune_grid()` function to find the value of $k$ that improves the performance of our model. To do so, we will use a technique known as cross-validation. Later in the course, we will cover cross-validation in detail. For now, we will simply use the `rsample` to build the necessary data for doing the cross-validation.  This package which is loaded with the `tidymodels` family of packages to create a cross-validation object. 
+
+
+```{r} 
+
+penguins_cv <- vfold_cv(penguins_train,v=10,repeats = 5)
+
+k_grid <- grid_regular(neighbors(), levels = 7)
+
+peng_spec_tune <- nearest_neighbor(neighbors = tune()) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+doParallel::registerDoParallel()
+
+set.seed(345)
+```
+
+### Classification
+
+```{r}
+peng_sex_tune <- tune_grid(peng_spec_tune,
+                           peng_sex_rec,
+                           resamples = penguins_cv,
+                           grid = k_grid,
+                           metrics = metric_set(accuracy))
+
+
+autoplot(peng_sex_tune)
+```
+
+
+Now having estimated the perfomance of our model on the test set for a variety of values for $k$, we can select the one with the best performance and refit on the full training set. 
+
+```{r}
+final_peng_sex <- finalize_model(peng_spec_tune, select_best(peng_sex_tune, "accuracy"))
+
+final_fit_sex <- fit(final_peng_sex, sex ~ flipper_length_mm + body_mass_g + species, penguins_train)
+```
+
+
+```{r}
+final_fit_sex %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  conf_mat(sex,.pred_class)
+```
+
+
+
+```{r}
+final_fit_sex %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  accuracy(sex,.pred_class)
+```
+
+
+```{r}
+
+final_fit_sex %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  mutate(prediction = ifelse(sex == .pred_class, "Correct", "Incorrect")) %>%
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = prediction)) +
+  geom_point() +
+  facet_wrap(~species) +
+  theme(legend.position = "bottom") +
+  scale_color_colorblind() +
+  labs(x = "Flipper Length (mm)", y = "Body Mass (g)")
+
+```
+
+### Regression
+
+```{r}
+peng_spec_tune <- nearest_neighbor(neighbors = tune()) %>%
+  set_engine("kknn") %>%
+  set_mode("regression")
+
+peng_mass_tune <- tune_grid(peng_spec_tune,
+                           peng_mass_rec,
+                           resamples = penguins_cv,
+                           grid = k_grid,
+                           metrics = metric_set(rmse))
+
+
+autoplot(peng_mass_tune)
+```
+
+
+
