@@ -4,7 +4,7 @@ author: "JMG"
 format: 
   html:
     echo: true
-    code-fold: true
+    code-fold: false
     toc: true
     self-contained: true
 ---
@@ -106,7 +106,6 @@ For both our classification and regression problems, we will use the `nearest_ne
 
 ```{r}
 #| echo: true
-#| code-fold: true
 
 set.seed(1234)
 
@@ -156,22 +155,32 @@ peng_sex_fit <- fit(peng_sex_wf,penguins_train)
 Let's examine our results:
 
 ```{r}
+#| code-fold: true
+
+
 peng_sex_fit %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
   conf_mat(sex,.pred_class)
 ```
 
+
+
 ```{r}
+#| code-fold: true
+
+
 peng_sex_fit %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
-  accuracy(sex,.pred_class)
+  accuracy(sex,.pred_class) %>%
+  kable()
 ```
 
 We can make a plot to show cases where our model made an incorrect prediction.
 
 ```{r}
+#| code-fold: true
 
 peng_sex_fit %>%
   predict(penguins_test) %>%
@@ -215,13 +224,17 @@ Let's examine our results:
 peng_mass_fit %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
-  rmse(body_mass_g,.pred)
+  rmse(body_mass_g,.pred) %>%
+  kable()
 
 ```
 
 Let's plot our predicted values against the actual values.
 
 ```{r}
+#| code-fold: true
+
+
 peng_mass_fit %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
@@ -229,11 +242,15 @@ peng_mass_fit %>%
   geom_point(color="darkblue") + 
   geom_abline(linetype="dashed") + 
   labs(x = "Actual Body Mass (g)", y = "Predicted Body Mass (g)")
+
 ```
 
 Let's see how the results compare across sex and species.
 
 ```{r}
+#| code-fold: true
+
+
 peng_mass_fit %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
@@ -301,7 +318,8 @@ final_fit_sex %>%
 final_fit_sex %>%
   predict(penguins_test) %>%
   cbind(penguins_test) %>%
-  accuracy(sex,.pred_class)
+  accuracy(sex,.pred_class) %>%
+  kable()
 ```
 
 
@@ -338,4 +356,44 @@ autoplot(peng_mass_tune)
 ```
 
 
+```{r}
+final_peng_mass <- finalize_model(peng_spec_tune, select_best(peng_mass_tune, "rmse"))
 
+final_fit_mass <- fit(final_peng_mass, body_mass_g ~ flipper_length_mm + sex + species , penguins_train)
+```
+
+
+```{r}
+final_fit_mass %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  rmse(body_mass_g,.pred) %>%
+  kable()
+```
+
+
+Let's plot our predicted values against the actual values.
+
+```{r}
+final_fit_mass %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  ggplot(aes(x=body_mass_g, y = .pred)) +
+  geom_point(color="darkblue") + 
+  geom_abline(linetype="dashed") + 
+  labs(x = "Actual Body Mass (g)", y = "Predicted Body Mass (g)")
+```
+
+Let's see how the results compare across sex and species.
+
+```{r}
+final_fit_mass %>%
+  predict(penguins_test) %>%
+  cbind(penguins_test) %>%
+  ggplot(aes(x=body_mass_g, y = .pred, color=sex)) +
+  geom_point() + 
+  geom_abline(linetype="dashed") + 
+  facet_wrap(~species) +
+  scale_color_colorblind() +
+  labs(x = "Actual Body Mass (g)", y = "Predicted Body Mass (g)")
+```
