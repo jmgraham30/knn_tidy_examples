@@ -80,7 +80,7 @@ penguins %>%
 
 It appears that male penguins tend to be heavier than female penguins but just body mass and flipper length do not clearly separate male and female penguins. Most likely, this is do to the fact that one or more species of penguins are mixed together in this data set.
 
- @fig-pengs-species reproduces @fig-pengs-plots tp show how male and female penguins differ by flipper length and body mass but also incorporates differences across species. 
+ @fig-pengs-species reproduces @fig-pengs-plots to show how male and female penguins differ by flipper length and body mass but also incorporates differences across species. 
 
 
 ```{r}
