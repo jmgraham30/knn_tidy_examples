@@ -3401,7 +3401,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">The Data</h2>
-<p>Throughout this notebook, we will use the <code>penguins</code> data set available through the <code>modeldata</code> package which gets loaded with the <code>tidymodels</code> family of packages. This data set contains information about penguins collected from 3 different species over three different islands. Each row in the data set corresponds to a single penguin for which they species, island, sex, and four physical body measurements are recorded.</p>
+<p>Throughout this notebook, we will use the <code>penguins</code> data set available through the <code>modeldata</code> package which gets loaded with the <code>tidymodels</code> family of packages. This data set contains information about penguins collected from 3 different species over three different islands. Each row in the data set corresponds to a single penguin for which the species, island, sex, and four physical body measurements are recorded.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -3496,8 +3496,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 <p>Now, we are interested in two types of problems:</p>
 <ol type="1">
-<li><p>A classification problem where we want to predict the sex of a penguins based on its physical measurements and perhaps the species and island it was collected from.</p></li>
-<li><p>A regression problem where we want to predict the body mass of a penguin based on its physical measurements and perhaps the sex and species as well.</p></li>
+<li><p>A classification problem where we want to predict the sex of penguins based on physical measurements and perhaps the species and island it was collected from.</p></li>
+<li><p>A regression problem where we want to predict the body mass of penguins based on physical measurements and perhaps the sex and species as well.</p></li>
 </ol>
 <p>For both problems, we will use the nearest neighbors algorithm to make our predictions. Further, we will use the <code>tidymodels</code> framework to perform the analysis. This framework is built on top of the <code>tidyverse</code> and provides a consistent interface for performing machine learning tasks. Later in the course, we will study the <code>tidymodels</code> framework in more detail. For now, we will just use it to perform our analysis.</p>
 <section id="eda" class="level3">

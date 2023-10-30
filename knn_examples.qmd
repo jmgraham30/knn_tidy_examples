@@ -26,7 +26,7 @@ theme_set(theme_minimal(base_size = 12))
 
 ## The Data
 
-Throughout this notebook, we will use the `penguins` data set available through the `modeldata` package which gets loaded with the `tidymodels` family of packages. This data set contains information about penguins collected from 3 different species over three different islands. Each row in the data set corresponds to a single penguin for which they species, island, sex, and four physical body measurements are recorded.  
+Throughout this notebook, we will use the `penguins` data set available through the `modeldata` package which gets loaded with the `tidymodels` family of packages. This data set contains information about penguins collected from 3 different species over three different islands. Each row in the data set corresponds to a single penguin for which the species, island, sex, and four physical body measurements are recorded.  
 
 ```{r}
 #| echo: true
@@ -52,9 +52,9 @@ penguins <- penguins %>%
 
 Now, we are interested in two types of problems:
 
-1. A classification problem where we want to predict the sex of a penguins based on its physical measurements and perhaps the species and island it was collected from.
+1. A classification problem where we want to predict the sex of penguins based on physical measurements and perhaps the species and island it was collected from.
 
-2. A regression problem where we want to predict the body mass of a penguin based on its physical measurements and perhaps the sex and species as well.
+2. A regression problem where we want to predict the body mass of penguins based on physical measurements and perhaps the sex and species as well.
 
 For both problems, we will use the nearest neighbors algorithm to make our predictions. Further, we will use the `tidymodels` framework to perform the analysis. This framework is built on top of the `tidyverse` and provides a consistent interface for performing machine learning tasks. Later in the course, we will study the `tidymodels` framework in more detail. For now, we will just use it to perform our analysis.
 
