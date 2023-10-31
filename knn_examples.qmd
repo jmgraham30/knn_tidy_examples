@@ -130,8 +130,8 @@ Since we are using nearest neighbors, we will need to normalize our quantitative
 
 peng_sex_rec <- recipe(sex ~ flipper_length_mm + body_mass_g + species,
                        data = penguins_train) %>%
-  step_dummy(all_nominal(),-all_outcomes()) %>%
-  step_normalize(all_numeric_predictors()) 
+  step_normalize(all_numeric_predictors()) %>%
+  step_dummy(all_nominal(),-all_outcomes()) 
 
   
 ```
@@ -208,8 +208,8 @@ Now, we will use the same approach to build a model to predict the body mass of 
 
 peng_mass_rec <- recipe(body_mass_g ~ flipper_length_mm + sex + species,
                        data = penguins_train) %>%
-  step_dummy(all_nominal()) %>%
-  step_normalize(all_numeric_predictors())
+  step_normalize(all_numeric_predictors()) %>%
+  step_dummy(all_nominal()) 
 
 peng_mass_spec <- nearest_neighbor(neighbors = 5) %>%
   set_engine("kknn") %>%
